@@ -4,10 +4,22 @@ var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Navigation = ReactRouter.Navigation;
+var History = ReactRouter.History;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
 var helpers = require('./helpers');
 
 var App = React.createClass({
+  getInitialState: function(){
+    return {
+      fishes: {},
+      order: {}
+    }
+  },
+  addFish: function(fish){
+    var timeStamp = new Date().getTime();
+    this.state.fishes[`fish-${timeStamp}`] = fish;
+    this.setState({fishes: this.state.fishes});
+  },
   render: function() {
     return (
       <div className="catch-of-the-day">
@@ -15,9 +27,40 @@ var App = React.createClass({
           <Header tagline="Fresh Seafood Market"/>
         </div>
         <Order/>
-        <Inventory/>
+        <Inventory addFish={this.addFish}/>
       </div>
     );
+  }
+});
+
+var AddFishForm = React.createClass({
+  createFish: function(event){
+    event.preventDefault();
+    var allRefs = this.refs
+    var fish = {
+      name: allRefs.name.value,
+      price: allRefs.price.value,
+      status: allRefs.status.value,
+      description: allRefs.desc.value,
+      image: allRefs.image.value
+    }
+    this.props.addFish(fish);
+    allRefs.fishForm.reset();
+  },
+  render: function(){
+    return(
+      <form className="fish-edit" ref="fishForm" onSubmit={this.createFish}>
+        <input type="text" ref="name" placeholder="Fish Name"/>
+        <input type="text" ref="price" placeholder="Fish Price"/>
+        <select ref="status">
+          <option>Fresh!</option>
+          <option>Sold Out</option>
+        </select>
+        <textarea type="text" ref="desc" placeholder="Desc"></textarea>
+        <input type="text" ref="image" placeholder="URL to Image"/>
+        <button type="submit">+ Add Item </button>
+      </form>
+    )
   }
 });
 
@@ -25,7 +68,7 @@ var Header = React.createClass({
   render: function(){
     return (
       <header className="top">
-        <h1>Catch
+        <h1>Deals
           <span className="ofThe">
             <span className="of">of</span>
             <span className="the">the</span>
@@ -52,16 +95,26 @@ var Order = React.createClass({
 var Inventory = React.createClass({
   render: function(){
     return (
-      <p>Inventory</p>
+      <div>
+        <h2>Inventory</h2>
+        <AddFishForm {...this.props}/>
+      </div>
     )
   }
 })
 
 var StorePicker = React.createClass({
+  mixins: [History],
+
+  goToStore: function(event){
+    event.preventDefault();
+    var storeId = this.refs.storeId.value;
+    this.history.pushState(null, `/store/${storeId}`)
+  },
 
   render: function() {
     return (
-      <form className="store-selector">
+      <form className="store-selector" onSubmit={this.goToStore}>
         <h2>Please Enter A Store</h2>
         <input type="text" ref="storeId" defaultValue={helpers.getFunName()}/>
         <input type="submit"/>
