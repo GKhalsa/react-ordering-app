@@ -94,6 +94,11 @@ var Fish = React.createClass({
        <button disabled={!isAvailable} onClick={this.addToOrder}>{buttonText}</button>
       </li>
     )
+  },
+  propTypes: {
+    addToOrder: React.PropTypes.func.isRequired,
+    index: React.PropTypes.string.isRequired,
+    details: React.PropTypes.string.isRequired
   }
 });
 
@@ -125,6 +130,9 @@ var AddFishForm = React.createClass({
         <button type="submit">+ Add Item </button>
       </form>
     )
+  },
+  propTypes: {
+    addFish: React.PropTypes.func.isRequired
   }
 });
 
@@ -145,6 +153,9 @@ var Header = React.createClass({
         </h3>
       </header>
     )
+  },
+  propTypes: {
+    tagline: React.PropTypes.string.isRequired
   }
 });
 
@@ -197,6 +208,11 @@ var Order = React.createClass({
 
       </div>
     )
+  },
+  propTypes: {
+    fishes: React.PropTypes.object.isRequired,
+    order: React.PropTypes.object.isRequired,
+    removeFromOrder: React.PropTypes.func.isRequired
   }
 })
 
@@ -226,6 +242,13 @@ var Inventory = React.createClass({
         <button onClick={this.props.loadSamples}>Load Sample Fishes</button>
       </div>
     )
+  },
+  propTypes: {
+    loadSamples: React.PropTypes.func.isRequired,
+    fishes: React.PropTypes.object.isRequired,
+    removeFish: React.PropTypes.func.isRequired,
+    linkState: React.PropTypes.func.isRequired,
+    addFish: React.PropTypes.func.isRequired
   }
 })
 
