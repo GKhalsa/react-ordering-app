@@ -7,6 +7,8 @@ var Navigation = ReactRouter.Navigation;
 var History = ReactRouter.History;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
 var helpers = require('./helpers');
+var Rebase = require('re-base');
+var base = Rebase.createClass('https://react-ordering-app.firebaseio.com/');
 
 var App = React.createClass({
   getInitialState: function(){
@@ -14,6 +16,12 @@ var App = React.createClass({
       fishes: {},
       order: {}
     }
+  },
+  componentDidMount: function(){
+    base.syncState(this.props.params.storeId + '/fishes', {
+      context: this,
+      state: 'fishes'
+    });
   },
   addToOrder: function(key){
     this.state.order[key] = this.state.order[key] + 1 || 1;
