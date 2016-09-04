@@ -1,11 +1,14 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var CSSTransitionGroup = require('react-addons-css-transition-group');
+
 var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Navigation = ReactRouter.Navigation;
 var History = ReactRouter.History;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
+
 var helpers = require('./helpers');
 var Rebase = require('re-base');
 var base = Rebase.createClass('https://react-ordering-app.firebaseio.com/');
@@ -155,7 +158,9 @@ var Order = React.createClass({
     }
     return (
       <li key={key}>
-        <span>{count}lbs</span>
+        <CSSTransitionGroup component="span" transitionName="count" transitionLeaveTimeout={250} transitionEnterTimeout={250}>
+          <span key={count}>{count}lbs</span>
+        </CSSTransitionGroup>
         {fish.name}
         <span className="price"> {helpers.formatPrice(count * fish.price)}</span>
         {removeButton}
@@ -179,13 +184,17 @@ var Order = React.createClass({
     return (
       <div className="order-wrap">
         <h2 className="order-title">Your Order</h2>
-        <ul className="order">
+
+        <CSSTransitionGroup className="order" component="ul"
+                            transitionName="order" transitionEnterTimeout={500}
+                            transitionLeaveTimeout={500}>
           {orderIds.map(this.renderOrder)}
           <li className="total">
             <strong>Total:</strong>
             {helpers.formatPrice(total)}
           </li>
-        </ul>
+        </CSSTransitionGroup>
+
       </div>
     )
   }
