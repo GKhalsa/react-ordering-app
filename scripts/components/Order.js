@@ -3,6 +3,7 @@ var CSSTransitionGroup = require('react-addons-css-transition-group');
 import helpers from '../helpers';
 import autobind from 'autobind-decorator';
 
+@autobind
 class Order extends React.Component{
 
   renderOrder(key){
