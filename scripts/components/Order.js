@@ -1,7 +1,7 @@
 import React from 'react';
-var CSSTransitionGroup = require('react-addons-css-transition-group');
 import helpers from '../helpers';
 import autobind from 'autobind-decorator';
+var CSSTransitionGroup = require('react-addons-css-transition-group');
 
 @autobind
 class Order extends React.Component{
